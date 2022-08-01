@@ -122,7 +122,32 @@
 					</execution>
 				</executions>
 			</plugin>
+
+<!--			Plugin for Check Style-->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-site-plugin</artifactId>-->
+<!--				<version>3.7.1</version>-->
+<!--			</plugin>-->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-project-info-reports-plugin</artifactId>-->
+<!--				<version>3.4.0</version>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
 
+<!--	Plugin for Check Style-->
+<!--	<reporting>-->
+<!--		<plugins>-->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--				<version>3.0.0</version>-->
+<!--				<configuration>-->
+<!--					<configLocation>src/main/resources/checkstyle.xml</configLocation>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+<!--		</plugins>-->
+<!--	</reporting>-->
 </project>
