@@ -2,7 +2,7 @@ package com.vansh.crudDemo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vansh.crudDemo.entity.Course;
-import com.vansh.crudDemo.service.CourseService;
+import com.vansh.crudDemo.service.CourseServiceImpl;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,7 +33,7 @@ class CourseControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Mock
-    CourseService courseService;
+    CourseServiceImpl courseServiceImpl;
     @InjectMocks
     private CourseController courseController;
 
@@ -51,7 +49,7 @@ class CourseControllerTest {
         courses.add(new Course(1, "Java", "Rs. 2000", "2 months"));
         courses.add(new Course(2, "NodeJs", "Rs. 1000", "1 month"));
 
-        when(courseService.getAllCourse()).thenReturn(courses);
+        when(courseServiceImpl.getAllCourse()).thenReturn(courses);
         this.mockMvc
                 .perform(get("/courses/"))
                 .andExpect(status().isOk())
@@ -64,7 +62,7 @@ class CourseControllerTest {
         Course course = new Course(1, "Java", "Rs. 2000", "2 months");
         int id = 1;
 
-        when(courseService.getCourse(id)).thenReturn(course);
+        when(courseServiceImpl.getCourse(id)).thenReturn(course);
         this.mockMvc
                 .perform(get("/courses/{id}", id))
                 .andExpect(status().isOk())
@@ -79,7 +77,7 @@ class CourseControllerTest {
     @Order(3)
     public void testAddCourse() throws Exception {
         Course course = new Course(1, "Java", "Rs. 2000", "2 months");
-        when(courseService.addCourse(course)).thenReturn(course);
+        when(courseServiceImpl.addCourse(course)).thenReturn(course);
 
         //Converting our Java object to JSON format bcoz MockMvc works only with JSON format
         ObjectMapper mapper = new ObjectMapper();
@@ -104,7 +102,7 @@ class CourseControllerTest {
     public void testUpdateCourse() throws Exception {
         Course course = new Course(1, "Java", "Rs. 2000", "2 months");
         int id = 1;
-        when(courseService.updateCourse(id, course)).thenReturn(course);
+        when(courseServiceImpl.updateCourse(id, course)).thenReturn(course);
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonbody = mapper.writeValueAsString(course);
@@ -128,7 +126,7 @@ class CourseControllerTest {
     public void testDeleteCourse() throws Exception {
         int id = 1;
         String response = "Success";
-        when(courseService.deleteCourse(id)).thenReturn(response);
+        when(courseServiceImpl.deleteCourse(id)).thenReturn(response);
         mockMvc.perform(delete("/courses/{id}",id))
                 .andExpect(status().isOk())
                 .andDo(print());

@@ -1,7 +1,7 @@
 package com.vansh.crudDemo.service;
 
 import com.vansh.crudDemo.entity.Course;
-import com.vansh.crudDemo.repository.CourseRepositoryInterface;
+import com.vansh.crudDemo.repository.CourseRepository;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -21,19 +21,19 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CourseServiceTest {
+public class CourseServiceImplTest {
     @Mock
-    private CourseRepositoryInterface courseRepositoryInterface;
+    private CourseRepository courseRepository;
     @InjectMocks
-    private CourseService courseService;
+    private CourseServiceImpl courseServiceImpl;
 
     @Test
     @Order(1)
     public void testAddCourse() {
         Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
 
-        when(courseRepositoryInterface.save(any())).thenReturn(expectedResult);
-        Course actualResult = courseService.addCourse(expectedResult);
+        when(courseRepository.save(any())).thenReturn(expectedResult);
+        Course actualResult = courseServiceImpl.addCourse(expectedResult);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -43,8 +43,8 @@ public class CourseServiceTest {
     public void testAddCourseNegative() {
         Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
 
-        when(courseRepositoryInterface.save(any())).thenReturn(null);
-        Course actualResult = courseService.addCourse(expectedResult);
+        when(courseRepository.save(any())).thenReturn(null);
+        Course actualResult = courseServiceImpl.addCourse(expectedResult);
 
         assertNull(actualResult);
     }
@@ -58,8 +58,8 @@ public class CourseServiceTest {
         expectedResult.add(course);
         expectedResult.add(course1);
 
-        when(courseRepositoryInterface.findAll()).thenReturn(expectedResult);
-        List<Course> actualResult = courseService.getAllCourse();
+        when(courseRepository.findAll()).thenReturn(expectedResult);
+        List<Course> actualResult = courseServiceImpl.getAllCourse();
 
         assertEquals(expectedResult.size(), actualResult.size());
     }
@@ -69,8 +69,8 @@ public class CourseServiceTest {
     public void testGetCourse() {
         Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
 
-        when(courseRepositoryInterface.findById(any())).thenReturn(Optional.of(expectedResult));
-        Course actualResult = courseService.getCourse(1);
+        when(courseRepository.findById(any())).thenReturn(Optional.of(expectedResult));
+        Course actualResult = courseServiceImpl.getCourse(1);
 
         assertEquals(expectedResult.getId(), actualResult.getId());
     }
@@ -80,9 +80,9 @@ public class CourseServiceTest {
     public void testUpdateCourse() {
         Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
 
-        when(courseRepositoryInterface.findById(any())).thenReturn(Optional.of(expectedResult));
-        when(courseRepositoryInterface.save(any())).thenReturn(expectedResult);
-        Course actualResult = courseService.getCourse(1);
+        when(courseRepository.findById(any())).thenReturn(Optional.of(expectedResult));
+        when(courseRepository.save(any())).thenReturn(expectedResult);
+        Course actualResult = courseServiceImpl.getCourse(1);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -91,8 +91,8 @@ public class CourseServiceTest {
     @Order(6)
     public void testDeleteCourse() {
         Course course = new Course(1, "Java", "Rs.2000", "2months");
-        courseService.deleteCourse(course.getId());
+        courseServiceImpl.deleteCourse(course.getId());
 
-        verify(courseRepositoryInterface, times(1)).deleteById(course.getId());
+        verify(courseRepository, times(1)).deleteById(course.getId());
     }
 }

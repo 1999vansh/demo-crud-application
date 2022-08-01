@@ -1,7 +1,7 @@
 package com.vansh.crudDemo.controller;
 
 import com.vansh.crudDemo.entity.Course;
-import com.vansh.crudDemo.service.CourseServiceInterface;
+import com.vansh.crudDemo.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/courses")
 public class CourseController {
     @Autowired
-    private CourseServiceInterface courseServiceInterface;
+    private CourseService courseService;
 
     private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
@@ -24,7 +24,7 @@ public class CourseController {
     @Operation(summary = "Get all courses details")
     public ResponseEntity<List<Course>> getAllCourse() {
         logger.info("Calling and starting getAllCourse()");
-        List<Course> courses = courseServiceInterface.getAllCourse();
+        List<Course> courses = courseService.getAllCourse();
         if (courses == null) {
             logger.error("Unable to fetch courses");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -37,7 +37,7 @@ public class CourseController {
     @Operation(summary = "Get course details by id")
     public ResponseEntity<Course> getCourse(@PathVariable int id) {
         logger.info("Calling and starting getCourse()");
-        Course course = courseServiceInterface.getCourse(id);
+        Course course = courseService.getCourse(id);
         if (course == null) {
             logger.error("Unable to fetch course");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -50,7 +50,7 @@ public class CourseController {
     @Operation(summary = "Add course details")
     public ResponseEntity<Course> addCourse(@RequestBody Course c) {
         logger.info("Calling and starting addCourse()");
-        Course course = courseServiceInterface.addCourse(c);
+        Course course = courseService.addCourse(c);
         if (course == null) {
             logger.error("Unable to fetch course");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -63,7 +63,7 @@ public class CourseController {
     @Operation(summary = "Update course details by id")
     public ResponseEntity<Course> updateCourse(@PathVariable int id, @RequestBody Course c) {
         logger.info("Calling and starting updateCourse()");
-        Course course = courseServiceInterface.updateCourse(id, c);
+        Course course = courseService.updateCourse(id, c);
         if (course == null) {
             logger.error("Unable to update course");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -76,7 +76,7 @@ public class CourseController {
     @Operation(summary = "Delete course details by id")
     public ResponseEntity<String> deleteCourse(@PathVariable int id) {
         logger.info("Calling and starting deleteCourse()");
-        String response = courseServiceInterface.deleteCourse(id);
+        String response = courseService.deleteCourse(id);
         if (response == "Success") {
             return new ResponseEntity<>("Course Deleted Successfully", HttpStatus.OK);
         }
