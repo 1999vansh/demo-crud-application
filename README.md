@@ -66,6 +66,10 @@ My first Spring Boot CRUD application which I have created using spring boot, JP
 
 https://github.com/1999vansh/demo-crud-application/pull/1
 
+## 🔗 Swagger Documentation Link
+
+http://localhost:8080/swagger-ui/index.html
+
 ## Developers
 
 - Vansh Garg
