@@ -62,6 +62,10 @@ My first Spring Boot CRUD application which I have created using spring boot, JP
 | `id`      | `int` | **Required**. Id of course to be deleted |
 
 
+## 🔗 Swagger Documentation Link
+
+http://localhost:8080/swagger-ui/index.html
+
 ## 🔗 Repository Link
 
 https://github.com/1999vansh/demo-crud-application/pull/1
