@@ -29,12 +29,12 @@ public class CourseController {
 
     @GetMapping("/")
     @Operation(summary = "Get all courses details")
-    public ResponseEntity<List<Course>> getAllCourse() {
+    public ResponseEntity<?> getAllCourse() {
         logger.info("Calling and starting getAllCourse()");
         List<Course> courses = courseService.getAllCourse();
         if (courses == null) {
             logger.error("Unable to fetch courses");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Unable to fetch course",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
@@ -42,12 +42,12 @@ public class CourseController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get course details by id")
-    public ResponseEntity<Course> getCourse(@PathVariable int id) {
+    public ResponseEntity<?> getCourse(@PathVariable int id) {
         logger.info("Calling and starting getCourse()");
         Course course = courseService.getCourse(id);
         if (course == null) {
             logger.error("Unable to fetch course");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Unable to fetch course",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
@@ -55,12 +55,12 @@ public class CourseController {
 
     @PostMapping("/")
     @Operation(summary = "Add course details")
-    public ResponseEntity<Course> addCourse(@RequestBody Course c) {
+    public ResponseEntity<?> addCourse(@RequestBody Course c) {
         logger.info("Calling and starting addCourse()");
         Course course = courseService.addCourse(c);
         if (course == null) {
-            logger.error("Unable to fetch course");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            logger.error("Unable to add course");
+            return new ResponseEntity<>("Unable to add course",HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
@@ -68,12 +68,12 @@ public class CourseController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update course details by id")
-    public ResponseEntity<Course> updateCourse(@PathVariable int id, @RequestBody Course c) {
+    public ResponseEntity<?> updateCourse(@PathVariable int id, @RequestBody Course c) {
         logger.info("Calling and starting updateCourse()");
         Course course = courseService.updateCourse(id, c);
         if (course == null) {
             logger.error("Unable to update course");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Unable to update course",HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(course, HttpStatus.OK);
     }
@@ -85,8 +85,8 @@ public class CourseController {
         logger.info("Calling and starting deleteCourse()");
         String response = courseService.deleteCourse(id);
         if (response == "Success") {
-            return new ResponseEntity<>("Course Deleted Successfully", HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
     }
 }
