@@ -1,5 +1,6 @@
 package com.vansh.crudDemo.controller;
 
+import com.vansh.crudDemo.dto.CourseDto;
 import com.vansh.crudDemo.entity.Course;
 import com.vansh.crudDemo.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,11 @@ public class CourseController {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
+    /**
+     * API to fetch all courses details
+     *
+     * @return ResponseEntity
+     */
     @GetMapping("/")
     @Operation(summary = "Get all courses details")
     public ResponseEntity<?> getAllCourse() {
@@ -34,51 +40,76 @@ public class CourseController {
         List<Course> courses = courseService.getAllCourse();
         if (courses == null) {
             logger.error("Unable to fetch courses");
-            return new ResponseEntity<>("Unable to fetch course",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Unable to fetch course", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 
 
+    /**
+     * API to fetch course details based on courseId
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @Operation(summary = "Get course details by id")
     public ResponseEntity<?> getCourse(@PathVariable int id) {
         logger.info("Calling and starting getCourse()");
-        Course course = courseService.getCourse(id);
-        if (course == null) {
+        CourseDto courseDto = courseService.getCourse(id);
+        if (courseDto == null) {
             logger.error("Unable to fetch course");
-            return new ResponseEntity<>("Unable to fetch course",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Unable to fetch course", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(course, HttpStatus.OK);
+        return new ResponseEntity<>(courseDto, HttpStatus.OK);
     }
 
 
+    /**
+     * API to add course details
+     *
+     * @param c
+     * @return
+     */
     @PostMapping("/")
     @Operation(summary = "Add course details")
-    public ResponseEntity<?> addCourse(@RequestBody Course c) {
+    public ResponseEntity<?> addCourse(@RequestBody(required = true) CourseDto c) {
         logger.info("Calling and starting addCourse()");
-        Course course = courseService.addCourse(c);
-        if (course == null) {
+        CourseDto courseDto = courseService.addCourse(c);
+        if (courseDto == null) {
             logger.error("Unable to add course");
-            return new ResponseEntity<>("Unable to add course",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Unable to add course", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(course, HttpStatus.OK);
+        return new ResponseEntity<>(courseDto, HttpStatus.OK);
     }
 
 
+    /**
+     * API to update course details based on courseId
+     *
+     * @param id
+     * @param c
+     * @return
+     */
     @PutMapping("/{id}")
     @Operation(summary = "Update course details by id")
-    public ResponseEntity<?> updateCourse(@PathVariable int id, @RequestBody Course c) {
+    public ResponseEntity<?> updateCourse(@PathVariable int id, @RequestBody CourseDto c) {
         logger.info("Calling and starting updateCourse()");
-        Course course = courseService.updateCourse(id, c);
-        if (course == null) {
+        CourseDto courseDto = courseService.updateCourse(id, c);
+        if (courseDto == null) {
             logger.error("Unable to update course");
-            return new ResponseEntity<>("Unable to update course",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Unable to update course", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(course, HttpStatus.OK);
+        return new ResponseEntity<>(courseDto, HttpStatus.OK);
     }
 
 
+    /**
+     * API to delete course based on courseId
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete course details by id")
     public ResponseEntity<String> deleteCourse(@PathVariable int id) {
@@ -87,6 +118,6 @@ public class CourseController {
         if (response == "Success") {
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
-        return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }
