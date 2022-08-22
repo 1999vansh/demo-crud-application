@@ -1,5 +1,6 @@
 package com.vansh.crudDemo.service;
 
+import com.vansh.crudDemo.dto.CourseDto;
 import com.vansh.crudDemo.entity.Course;
 import com.vansh.crudDemo.repository.CourseRepository;
 import org.junit.jupiter.api.MethodOrderer;
@@ -31,26 +32,17 @@ public class CourseServiceImplTest {
     @Order(1)
     public void testAddCourse() {
         Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
-
+        CourseDto courseDto = new CourseDto("Java", "Rs.2000", "2months");
         when(courseRepository.save(any())).thenReturn(expectedResult);
-        Course actualResult = courseServiceImpl.addCourse(expectedResult);
+        CourseDto actualResult = courseServiceImpl.addCourse(courseDto);
 
-        assertEquals(expectedResult, actualResult);
+        assertEquals(expectedResult.getCourseName(), actualResult.getCourseName());
+        assertEquals(expectedResult.getCourseFees(),actualResult.getCourseFees());
+        assertEquals(expectedResult.getCourseDuration(),actualResult.getCourseDuration());
     }
 
     @Test
     @Order(2)
-    public void testAddCourseNegative() {
-        Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
-
-        when(courseRepository.save(any())).thenReturn(null);
-        Course actualResult = courseServiceImpl.addCourse(expectedResult);
-
-        assertNull(actualResult);
-    }
-
-    @Test
-    @Order(3)
     public void testGetAllCourse() {
         List<Course> expectedResult = new ArrayList<>();
         Course course = new Course(1, "Java", "Rs.2000", "2months");
@@ -65,34 +57,37 @@ public class CourseServiceImplTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     public void testGetCourse() {
-        Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
-
+        Course expectedResult = new Course(1,"Java", "Rs.2000", "2months");
         when(courseRepository.findById(any())).thenReturn(Optional.of(expectedResult));
-        Course actualResult = courseServiceImpl.getCourse(1);
+        CourseDto actualResult = courseServiceImpl.getCourse(1);
 
-        assertEquals(expectedResult.getId(), actualResult.getId());
+        assertEquals(expectedResult.getCourseDuration(), actualResult.getCourseDuration());
+        assertEquals(expectedResult.getCourseFees(), actualResult.getCourseFees());
+        assertEquals(expectedResult.getCourseName(), actualResult.getCourseName());
+    }
+
+    @Test
+    @Order(4)
+    public void testUpdateCourse() {
+        Course expectedResult = new Course(1,"Java", "Rs.2000", "2months");
+        when(courseRepository.findById(any())).thenReturn(Optional.of(expectedResult));
+        when(courseRepository.save(any())).thenReturn(expectedResult);
+        CourseDto actualResult = courseServiceImpl.getCourse(1);
+
+        assertEquals(expectedResult.getCourseDuration(), actualResult.getCourseDuration());
+        assertEquals(expectedResult.getCourseFees(), actualResult.getCourseFees());
+        assertEquals(expectedResult.getCourseName(), actualResult.getCourseName());
     }
 
     @Test
     @Order(5)
-    public void testUpdateCourse() {
-        Course expectedResult = new Course(1, "Java", "Rs.2000", "2months");
-
-        when(courseRepository.findById(any())).thenReturn(Optional.of(expectedResult));
-        when(courseRepository.save(any())).thenReturn(expectedResult);
-        Course actualResult = courseServiceImpl.getCourse(1);
-
-        assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
-    @Order(6)
     public void testDeleteCourse() {
         Course course = new Course(1, "Java", "Rs.2000", "2months");
         courseServiceImpl.deleteCourse(course.getId());
 
         verify(courseRepository, times(1)).deleteById(course.getId());
     }
+
 }

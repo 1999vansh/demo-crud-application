@@ -1,6 +1,8 @@
 package com.vansh.crudDemo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vansh.crudDemo.dto.CourseDto;
 import com.vansh.crudDemo.entity.Course;
 import com.vansh.crudDemo.service.CourseServiceImpl;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -73,35 +76,35 @@ class CourseControllerTest {
                 .andDo(print());
     }
 
-//    @Test
-//    @Order(3)
-//    public void testAddCourse() throws Exception {
-//        CourseDto courseDto = new CourseDto("Java", "Rs. 2000", "2 months");
-//        when(courseServiceImpl.addCourse(courseDto)).thenReturn(courseDto);
-//
-//        //Converting our Java object to JSON format bcoz MockMvc works only with JSON format
-//        ObjectMapper mapper = new ObjectMapper();
-//        String jsonbody = mapper.writeValueAsString(courseDto);
-//
-//        this.mockMvc
-//                .perform(
-//                        post("/courses/")
-//                                .content(jsonbody)
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                )
-//                .andExpect(status().isOk())
-//                .andExpect(MockMvcResultMatchers.jsonPath(".courseName").value("Java"))
-//                .andExpect(MockMvcResultMatchers.jsonPath(".courseFees").value("Rs. 2000"))
-//                .andExpect(MockMvcResultMatchers.jsonPath(".courseDuration").value("2 months"))
-//                .andDo(print());
-//    }
+    @Test
+    @Order(3)
+    public void testAddCourse() throws Exception {
+        CourseDto courseDto = new CourseDto("Java", "Rs. 2000", "2 months");
+        when(courseServiceImpl.addCourse(any())).thenReturn(courseDto);
+
+        //Converting our Java object to JSON format bcoz MockMvc works only with JSON format
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonbody = mapper.writeValueAsString(courseDto);
+
+        this.mockMvc
+                .perform(
+                        post("/courses/")
+                                .content(jsonbody)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath(".courseName").value("Java"))
+                .andExpect(MockMvcResultMatchers.jsonPath(".courseFees").value("Rs. 2000"))
+                .andExpect(MockMvcResultMatchers.jsonPath(".courseDuration").value("2 months"))
+                .andDo(print());
+    }
 
     @Test
     @Order(4)
     public void testUpdateCourse() throws Exception {
         CourseDto courseDto = new CourseDto("Java", "Rs. 2000", "2 months");
         int id = 1;
-        when(courseServiceImpl.updateCourse(id, courseDto)).thenReturn(courseDto);
+        when(courseServiceImpl.updateCourse(anyInt(),any())).thenReturn(courseDto);
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonbody = mapper.writeValueAsString(courseDto);
@@ -112,7 +115,7 @@ class CourseControllerTest {
                                 .content(jsonbody)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-//                .andExpect(status().isOk())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath(".courseName").value("Java"))
                 .andExpect(MockMvcResultMatchers.jsonPath(".courseFees").value("Rs. 2000"))
                 .andExpect(MockMvcResultMatchers.jsonPath(".courseDuration").value("2 months"))

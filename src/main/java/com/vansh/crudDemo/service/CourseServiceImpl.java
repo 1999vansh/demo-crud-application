@@ -3,20 +3,21 @@ package com.vansh.crudDemo.service;
 import com.vansh.crudDemo.dto.CourseDto;
 import com.vansh.crudDemo.entity.Course;
 import com.vansh.crudDemo.repository.CourseRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+@Slf4j
 @Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
+//    private final Logger logger = LoggerFactory.getLogger(CourseServiceImpl.class);
 
     /**
      * method to add course details
@@ -30,9 +31,9 @@ public class CourseServiceImpl implements CourseService {
         try {
             course = courseRepository.save(dtoToEntityConverter(c));
         } catch (Exception e) {
-            logger.error("Error in addCourse() method - " + e.getMessage());
+            log.error("Error in addCourse() method - " + e.getMessage());
         }
-        return entityToDtoConverter(course);
+        return entityToDtoConverter(Objects.requireNonNull(course));
     }
 
     /**
@@ -46,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
         try {
             c = courseRepository.findAll();
         } catch (Exception e) {
-            logger.error("Error in getAllCourse() method - " + e.getMessage());
+            log.error("Error in getAllCourse() method - " + e.getMessage());
         }
         return c;
     }
@@ -63,9 +64,9 @@ public class CourseServiceImpl implements CourseService {
         try {
             course = courseRepository.findById(id).get();
         } catch (Exception e) {
-            logger.error("Error in getCourse() method - " + e.getMessage());
+            log.error("Error in getCourse() method - " + e.getMessage());
         }
-        return entityToDtoConverter(course);
+        return entityToDtoConverter(Objects.requireNonNull(course));
     }
 
     /**
@@ -80,7 +81,7 @@ public class CourseServiceImpl implements CourseService {
             courseRepository.deleteById(id);
             return "Success";
         } catch (Exception e) {
-            logger.error("Error in deleteCourse() method - " + e.getMessage());
+            log.error("Error in deleteCourse() method - " + e.getMessage());
             return "Failure";
         }
     }
@@ -101,9 +102,9 @@ public class CourseServiceImpl implements CourseService {
             obj.setCourseDuration(c.getCourseDuration());
             obj.setCourseFees(c.getCourseFees());
         } catch (Exception e) {
-            logger.error("Error in updateCourse() method - " + e.getMessage());
+            log.error("Error in updateCourse() method - " + e.getMessage());
         }
-        return entityToDtoConverter(courseRepository.save(obj));
+        return entityToDtoConverter(courseRepository.save(Objects.requireNonNull(obj)));
     }
 
     /**
