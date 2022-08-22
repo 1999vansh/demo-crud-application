@@ -65,6 +65,7 @@ public class CourseServiceImpl implements CourseService {
             course = courseRepository.findById(id).get();
         } catch (Exception e) {
             log.error("Error in getCourse() method - " + e.getMessage());
+            return null;
         }
         return entityToDtoConverter(Objects.requireNonNull(course));
     }
@@ -103,6 +104,7 @@ public class CourseServiceImpl implements CourseService {
             obj.setCourseFees(c.getCourseFees());
         } catch (Exception e) {
             log.error("Error in updateCourse() method - " + e.getMessage());
+            return null;
         }
         return entityToDtoConverter(courseRepository.save(Objects.requireNonNull(obj)));
     }
